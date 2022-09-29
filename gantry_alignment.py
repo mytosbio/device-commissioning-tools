@@ -1,7 +1,8 @@
 from utils.project_imports import *
 from utils.serial_toolbox import *
-MOVE_COMPLETE = f"INFO:move:x_stage move complete\r\n";
-KIT_READY = f"INIT:COMPLETE\r\n"
+MOVE_COMPLETE = f"INFO:move:x_stage move complete\r\n"; # to update for the move complete move:OUTPUT()?
+KIT_READY = f"INIT:COMPLETE\r\n";
+
 #%% Connect to the light and microscope gantries and set calibration values to default
 
 light_gantry_serialport = "COM18"
@@ -18,13 +19,13 @@ _z                 = 3; # default microscope gantry Z position
 step_size          = 0.1; # Movement step size
 
 #%% Check we are connecting to the correct gantries and they are using the default values
-lightGantry = connect(light_gantry_serialport);
+lightGantry = connect(light_gantry_serialport)
 wait_for_response(lightGantry,f"NAME:LightGantry\r\n")
 wait_for_response(lightGantry,KIT_READY)
 write_read(lightGantry,f"setXoffsets(0,1,0,0)\r\n")
 write_read(lightGantry,f"setYoffsets(1,0,0,0)\r\n")
 
-microscopeGantry =  connect(microscope_gantry_serialport);
+microscopeGantry =  connect(microscope_gantry_serialport)
 wait_for_response(microscopeGantry,f"NAME:MicroscopeGantry\r\n")
 wait_for_response(microscopeGantry,KIT_READY )
 write_read(microscopeGantry,f"setXoffsets(0,1,0,0)\r\n")
@@ -35,10 +36,11 @@ calibrated_positions = positions_to_check;
 i = 0;
 
 write_read(lightGantry,f"light(100)\r\n"); # turn light on
-
+print("Starting calibration at nominal positions")
+print("Use arrow keys to adjust position of light gantry, + or - to change the step size and n to confirm alignment and move onto the next position")
 for i in range(len(positions_to_check)):
     # store nominal position
-    _x = positions_to_check[i][0];
+    _x = positions_to_check[i][0]
     _y = positions_to_check[i][1]
     
     print("Calibrating for position x = " +str(_x) + ", y= " + str(_y))
@@ -61,7 +63,7 @@ for i in range(len(positions_to_check)):
             print("Step size set to " + str(step_size))
             time.sleep(1)
         if keyboard.is_pressed("-"):  
-            step_size = step_size/2'
+            step_size = step_size/2;
             print("Step size set to " + str(step_size))    
             time.sleep(1)
         if keyboard.is_pressed("n"):

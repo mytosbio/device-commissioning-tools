@@ -1,6 +1,6 @@
 from utils.project_imports import *
 from utils.serial_toolbox import *
-MOVE_COMPLETE = f"INFO:move:x_stage move complete\r\n"; # to update for the move complete move:OUTPUT()?
+MOVE_COMPLETE = f"move:OUTPUT()\r\n"; # to update for the move complete move:OUTPUT()?
 KIT_READY = f"INIT:COMPLETE\r\n";
 
 #%% Connect to the light and microscope gantries and set calibration values to default
@@ -38,6 +38,8 @@ i = 0;
 write_read(lightGantry,f"light(100)\r\n"); # turn light on
 print("Starting calibration at nominal positions")
 print("Use arrow keys to adjust position of light gantry, + or - to change the step size and n to confirm alignment and move onto the next position")
+t = PrettyTable(['Requested Position X', 'Requested Position Y', 'Calibrated Position X', ' Calibrated Position Y'])
+
 for i in range(len(positions_to_check)):
     # store nominal position
     _x = positions_to_check[i][0]
@@ -54,35 +56,39 @@ for i in range(len(positions_to_check)):
             _x = _x + step_size;
             time.sleep(0.25)
             write_wait_for_response(lightGantry,f"move({_x},{_y})\r\n",MOVE_COMPLETE)
-        if keyboard.is_pressed("right arrow"):  
+        elif keyboard.is_pressed("right arrow"):  
             _x = _x - step_size;
             time.sleep(0.25)
             write_wait_for_response(lightGantry,f"move({_x},{_y})\r\n",MOVE_COMPLETE)
-        if keyboard.is_pressed("up arrow"):  
+        elif keyboard.is_pressed("up arrow"):  
             _y = _y  + step_size;
             time.sleep(0.25)
             write_wait_for_response(lightGantry,f"move({_x},{_y})\r\n",MOVE_COMPLETE)
-        if keyboard.is_pressed("down arrow"):  
+        elif keyboard.is_pressed("down arrow"):  
             _y = _y - step_size;
             time.sleep(0.25)
             write_wait_for_response(lightGantry,f"move({_x},{_y})\r\n",MOVE_COMPLETE)
-        if keyboard.is_pressed("+"):  
+        elif keyboard.is_pressed("+"):  
             step_size = step_size*2;
-            print("Step size set to " + str(step_size))
+            print("Step size set to " + str(step_size) + "mm")
             time.sleep(1)
-        if keyboard.is_pressed("-"):  
+        elif keyboard.is_pressed("-"):  
             step_size = step_size/2;
-            print("Step size set to " + str(step_size))    
+            print("Step size set to " + str(step_size) + "mm")    
             time.sleep(1)
-        if keyboard.is_pressed("n"):
+        elif keyboard.is_pressed("n"):
             calibrated_positions[i][0] = _x;
             calibrated_positions[i][1] = _y;
             print("Calibrated position x = " +str(_x) + ", y= " + str(_y))
+            t.add_row([positions_to_check[i][0],positions_to_check[i][1],_x,_y])
             break;
+    
+# output calibrated values
+print(t)
         
 
             
-#%% Run least squares fitting:
+#%% Run least squares fitting - Felix
 
 
 

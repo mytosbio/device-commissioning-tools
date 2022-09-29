@@ -9,3 +9,4 @@ import seaborn as sns
 import os
 import sys
 import keyboard
+from prettytable import PrettyTable

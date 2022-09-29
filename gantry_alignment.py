@@ -44,7 +44,8 @@ for i in range(len(positions_to_check)):
     # store nominal position
     _x = positions_to_check[i][0]
     _y = positions_to_check[i][1]
-    
+    _x_orig = positions_to_check[i][0]
+    _y_orig = positions_to_check[i][1]
     print("Calibrating for position x = " +str(_x) + ", y= " + str(_y))
     write_wait_for_response(lightGantry,f"move({_x},{_y})\r\n",MOVE_COMPLETE)
     write_wait_for_response(microscopeGantry,f"move({_x},{_y},{_z})\r\n", MOVE_COMPLETE)
@@ -80,7 +81,7 @@ for i in range(len(positions_to_check)):
             calibrated_positions[i][0] = _x;
             calibrated_positions[i][1] = _y;
             print("Calibrated position x = " +str(_x) + ", y= " + str(_y))
-            t.add_row([positions_to_check[i][0],positions_to_check[i][1],_x,_y])
+            t.add_row([_x_orig,_y_orig,_x,_y])
             break;
     
 # output calibrated values

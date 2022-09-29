@@ -22,14 +22,14 @@ step_size          = 0.1; # Movement step size
 lightGantry = connect(light_gantry_serialport)
 wait_for_response(lightGantry,f"NAME:LightGantry\r\n")
 wait_for_response(lightGantry,KIT_READY)
-write_read(lightGantry,f"setXoffsets(0,1,0,0)\r\n")
-write_read(lightGantry,f"setYoffsets(1,0,0,0)\r\n")
+write_read(lightGantry,f"setXoffsets(1,0,0,0)\r\n")
+write_read(lightGantry,f"setYoffsets(0,1,0,0)\r\n")
 
 microscopeGantry =  connect(microscope_gantry_serialport)
 wait_for_response(microscopeGantry,f"NAME:MicroscopeGantry\r\n")
 wait_for_response(microscopeGantry,KIT_READY )
-write_read(microscopeGantry,f"setXoffsets(0,1,0,0)\r\n")
-write_read(microscopeGantry,f"setYoffsets(1,0,0,0)\r\n")
+write_read(microscopeGantry,f"setXoffsets(1,0,0,0)\r\n")
+write_read(microscopeGantry,f"setYoffsets(0,1,0,0)\r\n")
 
 #%% Loop through each capture position and wait for alignment to complete
 calibrated_positions = positions_to_check;

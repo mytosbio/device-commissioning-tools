@@ -13,7 +13,7 @@ positions_to_check = np.array([
                       [20,330],
                       [470,40],
                       [20,40]
-                     ], dtype=float);
+                     ], dtype=float); #[x,y] coordinates
 
 _z                 = 3; # default microscope gantry Z position
 step_size          = 0.1; # Movement step size
@@ -52,12 +52,20 @@ for i in range(len(positions_to_check)):
     while True:
         if keyboard.is_pressed("left arrow"):  
             _x = _x + step_size;
+            time.sleep(0.25)
+            write_wait_for_response(lightGantry,f"move({_x},{_y})\r\n",MOVE_COMPLETE)
         if keyboard.is_pressed("right arrow"):  
             _x = _x - step_size;
+            time.sleep(0.25)
+            write_wait_for_response(lightGantry,f"move({_x},{_y})\r\n",MOVE_COMPLETE)
         if keyboard.is_pressed("up arrow"):  
             _y = _y  + step_size;
+            time.sleep(0.25)
+            write_wait_for_response(lightGantry,f"move({_x},{_y})\r\n",MOVE_COMPLETE)
         if keyboard.is_pressed("down arrow"):  
             _y = _y - step_size;
+            time.sleep(0.25)
+            write_wait_for_response(lightGantry,f"move({_x},{_y})\r\n",MOVE_COMPLETE)
         if keyboard.is_pressed("+"):  
             step_size = step_size*2;
             print("Step size set to " + str(step_size))
@@ -72,8 +80,7 @@ for i in range(len(positions_to_check)):
             print("Calibrated position x = " +str(_x) + ", y= " + str(_y))
             break;
         
-        time.sleep(0.25)
-        write_wait_for_response(lightGantry,f"move({_x},{_y})\r\n",MOVE_COMPLETE)
+
             
 #%% Run least squares fitting:
 

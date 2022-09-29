@@ -47,5 +47,5 @@ def write_wait_for_response(ser,x,response):
     ser.write(x.encode());
     time.sleep(0.05)
     data = ser.readline();
-    wait_for_response(ser,finish_cmd);
+    wait_for_response(ser,response);
     return data
